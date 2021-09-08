@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.chengzhy.basiccode.demo.mapper.UserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.github.chengzhy.basiccode.demo.entity.UserInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="PASS_WORD" jdbcType="VARCHAR" property="passWord" />
+    <result column="EMAIL_ADDRESS" jdbcType="VARCHAR" property="emailAddress" />
+    <result column="MOBILE_PHONE" jdbcType="VARCHAR" property="mobilePhone" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, USER_NAME, PASS_WORD, EMAIL_ADDRESS, MOBILE_PHONE, CREATE_TIME
+  </sql>
+
+  <select id="selectByConditions" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from USER_INFO
+    <where>
+      <if test="userName != null and userName != ''">
+        <bind name="userNameLike" value="userName + '%'"/>
+        and USER_NAME like #{userNameLike, jdbcType=VARCHAR}
+      </if>
+      <if test="emailAddress != null and emailAddress != ''">
+        <bind name="emailAddressLike" value="emailAddress + '%'"/>
+        and EMAIL_ADDRESS like #{emailAddressLike, jdbcType=VARCHAR}
+      </if>
+      <if test="mobilePhone != null and mobilePhone != ''">
+        <bind name="mobilePhoneLike" value="mobilePhone + '%'"/>
+        and MOBILE_PHONE like #{mobilePhoneLike, jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
+</mapper>

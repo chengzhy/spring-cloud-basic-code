@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configuration status级别有8个:ALL,TRACE,DEBUG,INFO,WARN,ERROR,FATAL,OFF。帮助开发者找错，它可以检测log4j2的配置文件是否有错，也可以检测到死循环的logger
+monitorInterval log4j2自动检测配置文件的时间间隔(单位：秒) -->
+<Configuration status="WARN" monitorInterval="30">
+  <properties>
+    <!-- 日志输出格式，每个转换说明符以百分号(%)开头，'%'后面的转换字符有如下:
+    p (level) 日志级别
+    c（logger） Logger的Name
+    C (class) Logger调用者的全限定类名
+    d (date) 日期
+    highlight 高亮颜色
+    l (location) 调用位置
+    L (line) 行号
+    m (msg/message) 输出的内容
+    M (methode) 调用方法 ***
+    maker marker的全限定名
+    n 输出平台相关的换行符,如'\n' '\r\n'
+    pid (processId) 进程ID
+    level （p）日志级别
+    r JVM启动后经过的微秒
+    t (tn/thread/threadName) 线程名称
+    T (tid/threadId) 线程ID
+    tp (threadPriority) 线程优先级
+    x (NDC) 线程Context堆栈
+    -->
+    <property name="pattern">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t tid:%T] %p %l - %m%n</property>
+    <property name="logPath">../log/spring-cloud-basic-code</property>
+    <property name="fileName">log</property>
+  </properties>
+
+  <Appenders>
+    <!-- 设置在控制台打印日志，将输出写到System.err或System.out -->
+    <Console name="console" target="SYSTEM_OUT">
+      <PatternLayout pattern="${pattern}"/>
+    </Console>
+
+    <!-- RollingFile为同步日志，RollingRandomAccessFile异步日志
+    日志写入策略immediateFlush log4j2接收到日志事件时，是否立即将日志刷到磁盘，默认为true。 -->
+    <RollingFile name="RollingFile" fileName="${logPath}/${fileName}.log"
+                 filePattern="${logPath}/${date:yyyy-MM}/${fileName}-%d{yyyy-MM-dd-HH}-%i.log">
+      <PatternLayout pattern="${pattern}"/>
+      <Policies>
+        <!-- 根据时间生成日志文件 单位：以文件命名中的时间精度来确定单位。比如 yyyy-MM-dd单位为天，yyyy-MM-dd-HH单位为小时
+        interval：时间间隔
+        -->
+        <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+        <SizeBasedTriggeringPolicy size="10 MB"/>
+      </Policies>
+      <!-- 日志保存策略 max为最多保存日志文件的数目 -->
+      <DefaultRolloverStrategy max="20">
+        <!-- 配置保留30天 -->
+        <Delete basePath="${logPath}/" maxDepth="2">
+          <IfFileName glob="${fileName}-*.log" />
+          <IfLastModified age="30d" />
+        </Delete>
+      </DefaultRolloverStrategy>
+    </RollingFile>
+  </Appenders>
+
+  <!-- 整个工程默认日志实例，name=工程名，例如用@Slf4j这个注解或者LoggerFactory.getLogger(XXX.class)的日志实例 -->
+  <Loggers>
+    <Root level="info">
+      <AppenderRef ref="console"/>
+      <AppenderRef ref="RollingFile"/>
+    </Root>
+
+    <Logger name="com.github.chengzhy.basiccode" level="info" additivity="true" />
+  </Loggers>
+</Configuration>

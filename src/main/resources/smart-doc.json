@@ -1,0 +1,39 @@
+{
+  "serverUrl": "http://localhost:6666",
+  "isStrict": false,
+  "allInOne": true,
+  "outPath": "./src/main/resources/static/doc",
+  "coverOld": true,
+  "createDebugPage": false,
+  "packageFilters": "",
+  "md5EncryptedHtmlName": false,
+  "style":"xt256",
+  "projectName": "接口文档",
+  "skipTransientField": true,
+  "sortByTitle":false,
+  "showAuthor":true,
+  "requestFieldToUnderline":false,
+  "responseFieldToUnderline":false,
+  "inlineEnum":false,
+  "recursionLimit":7,
+  "allInOneDocFileName":"apiDoc.html",
+  "requestExample":"true",
+  "responseExample":"true",
+  "displayActualType":true,
+  "revisionLogs": [{
+    "version": "1.0",
+    "revisionTime": "2021-08-04 10:00",
+    "status": "create",
+    "author": "chengzhy",
+    "remarks": "初始化"
+  }
+  ],
+  "requestHeaders": [{
+    "name": "token",
+    "type": "string",
+    "desc": "Authorization Bearer Token",
+    "value":"token",
+    "required": true,
+    "since": "-"
+  }]
+}

@@ -1,0 +1,69 @@
+server:
+  port: 6789
+  shutdown: graceful
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=UTC
+    username: root
+    password: 123456
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  servlet:
+     multipart:
+        max-file-size: 2MB
+        max-request-size: 10MB
+  main:
+    allow-bean-definition-overriding: true
+  # graceful shutdown的缓冲时间
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+  resources:
+    static-locations: classpath:/
+  cache:
+    type: redis
+    cache-names: userInfo
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+    # map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+  mapper-locations: classpath*:mapper/*.xml,classpath*:mapper/*/*.xml
+  interceptor:
+    enable: true
+
+pagehelper:
+  reasonable: true
+  support-methods-arguments: true
+
+logging:
+  config: classpath:log4j2.xml
+
+ribbon:
+  # 设置ribbon的超时时间, 防止feign调用超时, 1000代表1秒
+  ConnectTimeout: 30000 # 链接超时时长
+  ReadTimeout: 30000 # 读取超时时长
+
+feign:
+  client:
+    service:
+      test-service: test-service
+
+# 定时任务定时时间配置
+cornJob:
+  testTask: 0/5 * * * * ?
+
+redisson:
+  yaml-path: ./redisson.yml
+
+elasticsearch:
+  hostlist: 127.0.0.1:9200
+
+minio:
+  endpoint: http://127.0.0.1:9000
+  accessKey: admin
+  secretKey: 12345678
