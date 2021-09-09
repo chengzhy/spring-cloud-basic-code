@@ -14,6 +14,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author chengzhy
  * @date 2021/9/9 9:20
  **/
+@SuppressWarnings("serial")
 @Slf4j
 public class VisiableThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
 
