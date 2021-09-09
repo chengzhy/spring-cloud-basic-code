@@ -1,5 +1,6 @@
 package com.github.chengzhy.basiccode.config;
 
+import com.github.chengzhy.basiccode.async.VisiableThreadPoolTaskExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +34,7 @@ public class ExecutorConfig extends AsyncConfigurerSupport {
      */
     @Bean
     public Executor defaultExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        ThreadPoolTaskExecutor executor = new VisiableThreadPoolTaskExecutor();
         // 核心线程数：线程池创建时候初始化的线程数
         executor.setCorePoolSize(CPU_NUM);
         // 最大线程数：线程池最大的线程数，只有在缓冲队列满了之后才会申请超过核心线程数的线程
