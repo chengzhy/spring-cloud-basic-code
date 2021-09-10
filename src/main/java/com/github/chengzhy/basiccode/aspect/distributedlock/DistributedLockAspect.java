@@ -51,16 +51,7 @@ public class DistributedLockAspect {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         DistRedisLock distRedisLock = methodSignature.getMethod()
                 .getAnnotation(DistRedisLock.class);
-        String lockKey = getRedisLockKey(joinPoint);
-        // 加锁
-        switch (distRedisLock.lockType()) {
-            case REENTRANT_LOCK:
-                return redisReentrantLock(joinPoint, lockKey);
-            case FAIR_LOCK:
-                return redisFairLock(joinPoint, lockKey);
-            default:
-                return redisReentrantLock(joinPoint, lockKey);
-        }
+        return distRedisLock.lockType().lock(joinPoint, redissonClient, getRedisLockKey(joinPoint));
     }
 
     /**
@@ -110,72 +101,105 @@ public class DistributedLockAspect {
         return lockKey.toString();
     }
 
-    /**
-     * 可重入锁加锁方式
-     *
-     * @author chengzhy
-     * @param joinPoint 程序连接点 {@code ProceedingJoinPoint}
-     * @param lockKey 分布式锁key {@code String}
-     * @date 2021/8/9 9:32
-     * @return {@code Object} ({@code joinPoint.proceed()} 或 {@code null})
-     */
-    private Object redisReentrantLock(@NonNull ProceedingJoinPoint joinPoint,
-                                      @NonNull String lockKey) throws Throwable {
-        return lock(joinPoint, redissonClient.getLock(lockKey));
-    }
-
-    /**
-     * 公平锁加锁方式
-     *
-     * @author chengzhy
-     * @param joinPoint 程序连接点 {@code ProceedingJoinPoint}
-     * @param lockKey 分布式锁key {@code String}
-     * @date 2021/8/9 9:32
-     * @return {@code Object} ({@code joinPoint.proceed()} 或 {@code null})
-     */
-    private Object redisFairLock(@NonNull ProceedingJoinPoint joinPoint,
-                                 @NonNull String lockKey) throws Throwable {
-        return lock(joinPoint, redissonClient.getFairLock(lockKey));
-    }
-
-    /**
-     * RLock加锁操作
-     *
-     * @author chengzhy
-     * @param joinPoint 程序连接点 {@code ProceedingJoinPoint}
-     * @param lock {@link RLock}
-     * @date 2021/8/9 9:32
-     * @return {@code Object} ({@code joinPoint.proceed()} 或 {@code null})
-     */
-    private Object lock(@NonNull ProceedingJoinPoint joinPoint, @NonNull RLock lock) throws Throwable {
-        boolean lockSuccess;
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        DistRedisLock distRedisLock = methodSignature.getMethod()
-                .getAnnotation(DistRedisLock.class);
-        try {
-            if (distRedisLock.tryLock()) {
-                // tryLock加锁方式
-                lockSuccess = distRedisLock.waitTime() == -1L ? lock.tryLock() :
-                        lock.tryLock(distRedisLock.waitTime(), TimeUnit.SECONDS);
-            } else {
-                // 普通加锁方式
-                lock.lock();
-                lockSuccess = true;
+    public enum RedissonLock {
+        /**
+         * 可重入锁
+         */
+        REENTRANT_LOCK {
+            /**
+             * 可重入锁加锁方式
+             *
+             * @author chengzhy
+             * @param joinPoint 程序连接点 {@code ProceedingJoinPoint}
+             * @param redissonClient {@link RedissonClient}
+             * @param lockKey 分布式锁key {@code String}
+             * @date 2021/8/9 9:32
+             * @return {@code Object} ({@code joinPoint.proceed()} 或 {@code null})
+             * @throws Throwable 程序错误
+             */
+            @Override
+            public Object lock(ProceedingJoinPoint joinPoint, RedissonClient redissonClient,
+                               String lockKey) throws Throwable {
+                RLock rLock = redissonClient.getLock(lockKey);
+                return lock(joinPoint, rLock);
             }
-        } catch (RedisException e) {
-            log.error(e.getMessage(), e);
-            return joinPoint.proceed();
-        }
-        if (lockSuccess) {
-            Object result = joinPoint.proceed();
+        },
+        /**
+         * 公平锁
+         */
+        FAIR_LOCK {
+            /**
+             * 公平锁加锁方式
+             *
+             * @author chengzhy
+             * @param joinPoint 程序连接点 {@code ProceedingJoinPoint}
+             * @param redissonClient {@link RedissonClient}
+             * @param lockKey 分布式锁key {@code String}
+             * @date 2021/8/9 9:32
+             * @return {@code Object} ({@code joinPoint.proceed()} 或 {@code null})
+             * @throws Throwable 程序错误
+             */
+            @Override
+            public Object lock(ProceedingJoinPoint joinPoint, RedissonClient redissonClient,
+                               String lockKey) throws Throwable {
+                RLock rLock = redissonClient.getFairLock(lockKey);
+                return lock(joinPoint, rLock);
+            }
+        };
+
+        /**
+         * 加锁抽象方法
+         *
+         * @author chengzhy
+         * @param joinPoint 程序连接点 {@code ProceedingJoinPoint}
+         * @param redissonClient {@link RedissonClient}
+         * @param lockKey 分布式锁key {@code String}
+         * @date 2021/9/9 17:00
+         * @return {@code Object} ({@code joinPoint.proceed()} 或 {@code null})
+         * @throws Throwable 程序错误
+         */
+        public abstract Object lock(@NonNull ProceedingJoinPoint joinPoint, @NonNull RedissonClient redissonClient,
+                                    @NonNull String lockKey) throws Throwable;
+
+        /**
+         * RLock加锁操作
+         *
+         * @author chengzhy
+         * @param joinPoint 程序连接点 {@code ProceedingJoinPoint}
+         * @param rLock {@link RLock}
+         * @date 2021/8/9 9:32
+         * @return {@code Object} ({@code joinPoint.proceed()} 或 {@code null})
+         */
+        protected Object lock(@NonNull ProceedingJoinPoint joinPoint, @NonNull RLock rLock) throws Throwable {
+            boolean lockSuccess;
+            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+            DistRedisLock distRedisLock = methodSignature.getMethod()
+                    .getAnnotation(DistRedisLock.class);
             try {
-                lock.unlock();
+                if (distRedisLock.tryLock()) {
+                    // tryLock加锁方式
+                    lockSuccess = distRedisLock.waitTime() == -1L ? rLock.tryLock() :
+                            rLock.tryLock(distRedisLock.waitTime(), TimeUnit.SECONDS);
+                } else {
+                    // 普通加锁方式
+                    rLock.lock();
+                    lockSuccess = true;
+                }
             } catch (RedisException e) {
                 log.error(e.getMessage(), e);
+                return joinPoint.proceed();
             }
-            return result;
+            if (lockSuccess) {
+                Object result = joinPoint.proceed();
+                try {
+                    rLock.unlock();
+                } catch (RedisException e) {
+                    log.error(e.getMessage(), e);
+                }
+                return result;
+            }
+            return null;
         }
-        return null;
     }
 
 }
