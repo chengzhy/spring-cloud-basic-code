@@ -171,7 +171,7 @@ public class DistributedLockAspect {
          * @return {@code Object} ({@code joinPoint.proceed()} 或 {@code null})
          */
         protected Object lock(@NonNull ProceedingJoinPoint joinPoint, @NonNull RLock rLock) throws Throwable {
-            boolean lockSuccess;
+            boolean lockSuccess = false;
             MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
             DistRedisLock distRedisLock = methodSignature.getMethod()
                     .getAnnotation(DistRedisLock.class);
@@ -188,11 +188,15 @@ public class DistributedLockAspect {
             } catch (RedisException e) {
                 log.error(e.getMessage(), e);
                 return joinPoint.proceed();
+            } catch (IllegalStateException | InterruptedException e) {
+                log.error(e.getMessage(), e);
             }
             if (lockSuccess) {
                 Object result = joinPoint.proceed();
                 try {
-                    rLock.unlock();
+                    if (rLock.isLocked() && rLock.isHeldByCurrentThread()) {
+                        rLock.unlock();
+                    }
                 } catch (RedisException e) {
                     log.error(e.getMessage(), e);
                 }
