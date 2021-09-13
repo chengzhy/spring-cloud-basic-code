@@ -10,7 +10,7 @@ import java.util.StringJoiner;
   * @author chengzhy
   * @date 2021/8/4 16:56
   **/
-public final class ResponseResult<T> extends AbstractResponseResult {
+public final class ResponseResult<T> extends AbstractResponseResult<T> {
 
     private static final long serialVersionUID = -690024474918963592L;
 

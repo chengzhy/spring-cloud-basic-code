@@ -14,7 +14,7 @@ import java.util.StringJoiner;
  **/
 @Getter
 @Setter
-public final class ResponsePageResult<T> extends AbstractResponseResult {
+public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
 
     private static final long serialVersionUID = -4891998292422962459L;
 
