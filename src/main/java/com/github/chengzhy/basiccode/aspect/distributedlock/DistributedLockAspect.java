@@ -82,7 +82,7 @@ public class DistributedLockAspect {
         if (args!=null && args.length>0) {
             Annotation[][] annotations = methodSignature.getMethod().getParameterAnnotations();
             SortedMap<Integer, String> keys = new TreeMap<>();
-            for (int i=0; i< annotations.length; i++) {
+            for (int i=0; i<annotations.length; i++) {
                 Annotation[] paramAnnotations = annotations[i];
                 for (Annotation annotation : paramAnnotations) {
                     if (RedisLockKey.class.equals(annotation.annotationType())) {
