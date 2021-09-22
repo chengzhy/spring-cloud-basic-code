@@ -1,7 +1,9 @@
 package com.github.chengzhy.basiccode.config;
 
 import io.minio.MinioClient;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,15 +13,15 @@ import org.springframework.context.annotation.Configuration;
  * @date 2021/8/6 15:30
  **/
 @Configuration
+@ConfigurationProperties(prefix = "minio")
+@Getter
+@Setter
 public class MinioConfig {
 
-    @Value("${minio.endpoint}")
     private String endpoint;
 
-    @Value("${minio.accessKey}")
     private String accessKey;
 
-    @Value("${minio.secretKey}")
     private String secretKey;
 
     /**
