@@ -43,21 +43,21 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
      * @return 请求成功返回响应体
      */
     public static <T> ResponsePageResult<T> success(T data, long total) {
-        return success(data, Constants.SUCCESS_MESSAGE, total);
+        return success(data, total, Constants.SUCCESS_MESSAGE);
     }
 
     /**
-     * 请求成功(响应结果, 响应信息, 响应结果总数)
+     * 请求成功(响应结果, 响应结果总数, 响应信息)
      *
      * @author chengzhy
      * @param data 响应结果
-     * @param message 响应信息
      * @param total 响应结果总数
+     * @param message 响应信息
      * @param <T> 响应结果类型
      * @date 2021/8/4 16:56
      * @return 请求成功返回响应体
      */
-    public static <T> ResponsePageResult<T> success(T data, String message, long total) {
+    public static <T> ResponsePageResult<T> success(T data, long total, String message) {
         return ResponsePageResult.<T>builder()
                 .code(HttpStatus.OK.value())
                 .message(message)
@@ -131,7 +131,7 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
      * @return 请求响应返回体
      */
     public static ResponsePageResult response(int code, String message) {
-        return ResponsePageResult.response(code, message, null, 0);
+        return ResponsePageResult.response(code, null, 0L, message);
     }
 
     /**
@@ -146,22 +146,22 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
      * @return 请求响应返回体
      */
     public static <T> ResponsePageResult<T> response(int code, T data, long total) {
-        return ResponsePageResult.response(code, null, data, total);
+        return ResponsePageResult.response(code, data, total, Constants.RESPONSE_MESSAGE);
     }
 
     /**
-     * 请求响应(响应编码, 响应信息, 响应结果, 响应结果总数)
+     * 请求响应(响应编码, 响应结果, 响应结果总数, 响应信息)
      *
      * @author chengzhy
      * @param code 响应编码
-     * @param message 响应信息
      * @param data 响应结果
      * @param total 响应结果总数
+     * @param message 响应信息
      * @param <T> 响应结果类型
      * @date 2021/8/27 10:20
      * @return 请求响应返回体
      */
-    public static <T> ResponsePageResult<T> response(int code, String message, T data, long total) {
+    public static <T> ResponsePageResult<T> response(int code, T data, long total, String message) {
         return ResponsePageResult.<T>builder()
                 .code(code)
                 .message(message)

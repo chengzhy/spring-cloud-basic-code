@@ -15,4 +15,6 @@ public final class Constants {
 
     public static final String FAILURE_MESSAGE = "failure";
 
+    public static final String RESPONSE_MESSAGE = "response";
+
 }

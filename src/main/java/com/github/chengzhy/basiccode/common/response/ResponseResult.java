@@ -141,7 +141,7 @@ public final class ResponseResult<T> extends AbstractResponseResult<T> {
      * @return 请求响应返回体
      */
     public static ResponseResult response(int code, String message) {
-        return response(code, message, null);
+        return response(code, null, message);
     }
 
     /**
@@ -155,21 +155,21 @@ public final class ResponseResult<T> extends AbstractResponseResult<T> {
      * @return 请求响应返回体
      */
     public static <T> ResponseResult<T> response(int code, T data) {
-        return response(code, null, data);
+        return response(code, data, Constants.RESPONSE_MESSAGE);
     }
 
     /**
-     * 请求响应(响应编码, 响应信息, 响应结果)
+     * 请求响应(响应编码, 响应结果, 响应信息)
      *
      * @author chengzhy
      * @param code 响应编码
-     * @param message 响应信息
      * @param data 响应结果
+     * @param message 响应信息
      * @param <T> 响应结果类型
      * @date 2021/8/27 9:43
      * @return 请求响应返回体
      */
-    public static <T> ResponseResult<T> response(int code, String message, T data) {
+    public static <T> ResponseResult<T> response(int code, T data, String message) {
         return ResponseResult.<T>builder()
                 .code(code)
                 .message(message)
