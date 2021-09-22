@@ -18,28 +18,28 @@ public abstract class AbstractResponseResult<T> implements Serializable {
     /**
      * 响应编码
      */
-    private int code;
+    protected int code;
 
     /**
      * 响应信息
      */
-    private String message;
+    protected String message;
 
     /**
      * 响应数据
      */
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
-    private T data;
+    protected T data;
 
     /**
      * 请求是否成功
      */
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
-    private Boolean success;
+    protected Boolean success;
 
     /**
      * 当前时间戳
      */
-    private long timestamp;
+    protected long timestamp;
 
 }

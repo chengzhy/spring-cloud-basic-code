@@ -23,6 +23,15 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
      */
     private long total;
 
+    private ResponsePageResult(int code, String message, T data, Boolean success, long timestamp, long total) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+        this.success = success;
+        this.timestamp = timestamp;
+        this.total = total;
+    }
+
     /**
      * 请求成功(响应结果, 响应结果总数)
      *
@@ -49,14 +58,14 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
      * @return 请求成功返回响应体
      */
     public static <T> ResponsePageResult<T> success(T data, String message, long total) {
-        ResponsePageResult<T> responsePageResult = new ResponsePageResult<T>();
-        responsePageResult.setCode(HttpStatus.OK.value());
-        responsePageResult.setMessage(message);
-        responsePageResult.setData(data);
-        responsePageResult.setTotal(total);
-        responsePageResult.setSuccess(true);
-        responsePageResult.setTimestamp(System.currentTimeMillis());
-        return responsePageResult;
+        return ResponsePageResult.<T>builder()
+                .code(HttpStatus.OK.value())
+                .message(message)
+                .data(data)
+                .success(true)
+                .timestamp(System.currentTimeMillis())
+                .total(total)
+                .build();
     }
 
     /**
@@ -104,12 +113,12 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
      * @return 请求失败返回响应体
      */
     public static ResponsePageResult fail(int code, String message) {
-        ResponsePageResult responsePageResult = new ResponsePageResult();
-        responsePageResult.setCode(code);
-        responsePageResult.setMessage(message);
-        responsePageResult.setSuccess(false);
-        responsePageResult.setTimestamp(System.currentTimeMillis());
-        return responsePageResult;
+        return ResponsePageResult.builder()
+                .code(code)
+                .message(message)
+                .success(false)
+                .timestamp(System.currentTimeMillis())
+                .build();
     }
 
     /**
@@ -153,13 +162,13 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
      * @return 请求响应返回体
      */
     public static <T> ResponsePageResult<T> response(int code, String message, T data, long total) {
-        ResponsePageResult<T> responsePageResult = new ResponsePageResult<>();
-        responsePageResult.setCode(code);
-        responsePageResult.setMessage(message);
-        responsePageResult.setData(data);
-        responsePageResult.setTimestamp(System.currentTimeMillis());
-        responsePageResult.setTotal(total);
-        return responsePageResult;
+        return ResponsePageResult.<T>builder()
+                .code(code)
+                .message(message)
+                .data(data)
+                .timestamp(System.currentTimeMillis())
+                .total(total)
+                .build();
     }
 
     @Override
@@ -169,9 +178,71 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
                 .add("message='" + getMessage() + "'")
                 .add("data=" + getData())
                 .add("success=" + getSuccess())
-                .add("timestamp='" + getTimestamp() + "'")
+                .add("timestamp=" + getTimestamp())
                 .add("total=" + getTotal())
                 .toString();
+    }
+
+    public static <T> Builder<T> builder() {
+        return new Builder<>();
+    }
+
+    public static final class Builder<T> {
+        private int code;
+        private String message;
+        private T data;
+        private Boolean success;
+        private long timestamp;
+        private long total;
+
+        public Builder() {
+        }
+
+        public Builder<T> code(int code) {
+            this.code = code;
+            return this;
+        }
+
+        public Builder<T> message(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public Builder<T> data(T data) {
+            this.data = data;
+            return this;
+        }
+
+        public Builder<T> success(Boolean success) {
+            this.success = success;
+            return this;
+        }
+
+        public Builder<T> timestamp(long timestamp) {
+            this.timestamp = timestamp;
+            return this;
+        }
+
+        public Builder<T> total(long total) {
+            this.total = total;
+            return this;
+        }
+
+        public ResponsePageResult<T> build() {
+            return new ResponsePageResult<>(this.code, this.message, this.data, this.success, this.timestamp, this.total);
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", Builder.class.getSimpleName() + "[", "]")
+                    .add("code=" + code)
+                    .add("message='" + message + "'")
+                    .add("data=" + data)
+                    .add("success=" + success)
+                    .add("timestamp=" + timestamp)
+                    .add("total=" + total)
+                    .toString();
+        }
     }
 
 }

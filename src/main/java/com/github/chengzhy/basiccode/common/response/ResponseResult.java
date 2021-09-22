@@ -14,6 +14,14 @@ public final class ResponseResult<T> extends AbstractResponseResult<T> {
 
     private static final long serialVersionUID = -690024474918963592L;
 
+    private ResponseResult(int code, String message, T data, Boolean success, long timestamp) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+        this.success = success;
+        this.timestamp = timestamp;
+    }
+
     /**
      * 请求成功()
      *
@@ -61,13 +69,13 @@ public final class ResponseResult<T> extends AbstractResponseResult<T> {
      * @return 请求成功返回响应体
      */
     public static <T> ResponseResult<T> success(T data, String message) {
-        ResponseResult<T> responseResult = new ResponseResult<T>();
-        responseResult.setCode(HttpStatus.OK.value());
-        responseResult.setMessage(message);
-        responseResult.setData(data);
-        responseResult.setSuccess(true);
-        responseResult.setTimestamp(System.currentTimeMillis());
-        return responseResult;
+        return ResponseResult.<T>builder()
+                .code(HttpStatus.OK.value())
+                .message(message)
+                .data(data)
+                .success(true)
+                .timestamp(System.currentTimeMillis())
+                .build();
     }
 
     /**
@@ -115,12 +123,12 @@ public final class ResponseResult<T> extends AbstractResponseResult<T> {
      * @return 请求失败返回响应体
      */
     public static ResponseResult fail(int code, String message) {
-        ResponseResult responseResult = new ResponseResult();
-        responseResult.setCode(code);
-        responseResult.setMessage(message);
-        responseResult.setSuccess(false);
-        responseResult.setTimestamp(System.currentTimeMillis());
-        return responseResult;
+        return ResponseResult.builder()
+                .code(code)
+                .message(message)
+                .success(false)
+                .timestamp(System.currentTimeMillis())
+                .build();
     }
 
     /**
@@ -162,12 +170,12 @@ public final class ResponseResult<T> extends AbstractResponseResult<T> {
      * @return 请求响应返回体
      */
     public static <T> ResponseResult<T> response(int code, String message, T data) {
-        ResponseResult<T> responseResult = new ResponseResult<T>();
-        responseResult.setCode(code);
-        responseResult.setMessage(message);
-        responseResult.setData(data);
-        responseResult.setTimestamp(System.currentTimeMillis());
-        return responseResult;
+        return ResponseResult.<T>builder()
+                .code(code)
+                .message(message)
+                .data(data)
+                .timestamp(System.currentTimeMillis())
+                .build();
     }
 
     @Override
@@ -177,8 +185,63 @@ public final class ResponseResult<T> extends AbstractResponseResult<T> {
                 .add("message='" + getMessage() + "'")
                 .add("data=" + getData())
                 .add("success=" + getSuccess())
-                .add("timestamp='" + getTimestamp() + "'")
+                .add("timestamp=" + getTimestamp())
                 .toString();
+    }
+
+    public static <T> Builder<T> builder() {
+        return new Builder<>();
+    }
+
+    public static final class Builder<T> {
+        private int code;
+        private String message;
+        private T data;
+        private Boolean success;
+        private long timestamp;
+
+        public Builder() {
+        }
+
+        public Builder<T> code(int code) {
+            this.code = code;
+            return this;
+        }
+
+        public Builder<T> message(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public Builder<T> data(T data) {
+            this.data = data;
+            return this;
+        }
+
+        public Builder<T> success(Boolean success) {
+            this.success = success;
+            return this;
+        }
+
+        public Builder<T> timestamp(long timestamp) {
+            this.timestamp = timestamp;
+            return this;
+        }
+
+        public ResponseResult<T> build() {
+            return new ResponseResult(this.code, this.message, this.data, this.success, this.timestamp);
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", Builder.class.getSimpleName() + "[", "]")
+                    .add("code=" + code)
+                    .add("message='" + message + "'")
+                    .add("data=" + data)
+                    .add("success=" + success)
+                    .add("timestamp=" + timestamp)
+                    .toString();
+        }
     }
 
 }
