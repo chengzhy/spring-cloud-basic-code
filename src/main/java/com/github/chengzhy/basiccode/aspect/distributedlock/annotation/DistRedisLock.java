@@ -55,6 +55,15 @@ public @interface DistRedisLock {
     boolean tryLock() default false;
 
     /**
+     * 锁有效时间 单位：秒
+     *
+     * @author chengzhy
+     * @date 2021/9/24 11:29
+     * @return 锁有效时间
+     */
+    long leaseTime() default -1L;
+
+    /**
      * 尝试加锁方式参数：等待加锁的时间(最多等待该时间) 单位：秒
      *
      * @author chengzhy

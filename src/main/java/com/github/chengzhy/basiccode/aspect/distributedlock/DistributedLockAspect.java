@@ -179,10 +179,15 @@ public class DistributedLockAspect {
                 if (distRedisLock.tryLock()) {
                     // tryLock加锁方式
                     lockSuccess = (distRedisLock.waitTime() == -1L) ? rLock.tryLock()
-                            : rLock.tryLock(distRedisLock.waitTime(), TimeUnit.SECONDS);
+                            : (distRedisLock.leaseTime() == -1L) ? rLock.tryLock(distRedisLock.waitTime(), TimeUnit.SECONDS)
+                            : rLock.tryLock(distRedisLock.waitTime(), distRedisLock.leaseTime(), TimeUnit.SECONDS);
                 } else {
                     // 普通加锁方式
-                    rLock.lock();
+                    if (distRedisLock.leaseTime() == -1L) {
+                        rLock.lock();
+                    } else {
+                        rLock.lock(distRedisLock.leaseTime(), TimeUnit.SECONDS);
+                    }
                     lockSuccess = true;
                 }
             } catch (RedisException e) {
