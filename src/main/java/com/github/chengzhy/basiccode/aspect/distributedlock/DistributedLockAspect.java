@@ -192,15 +192,17 @@ public class DistributedLockAspect {
                 log.error(e.getMessage(), e);
             }
             if (lockSuccess) {
-                Object result = joinPoint.proceed();
                 try {
-                    if (rLock.isLocked() && rLock.isHeldByCurrentThread()) {
-                        rLock.unlock();
+                    return joinPoint.proceed();
+                } finally {
+                    try {
+                        if (rLock.isLocked() && rLock.isHeldByCurrentThread()) {
+                            rLock.unlock();
+                        }
+                    } catch (RedisException e) {
+                        log.error(e.getMessage(), e);
                     }
-                } catch (RedisException e) {
-                    log.error(e.getMessage(), e);
                 }
-                return result;
             }
             return null;
         }
