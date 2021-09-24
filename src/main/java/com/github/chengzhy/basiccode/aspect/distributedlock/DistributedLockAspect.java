@@ -178,8 +178,8 @@ public class DistributedLockAspect {
             try {
                 if (distRedisLock.tryLock()) {
                     // tryLock加锁方式
-                    lockSuccess = distRedisLock.waitTime() == -1L ? rLock.tryLock() :
-                            rLock.tryLock(distRedisLock.waitTime(), TimeUnit.SECONDS);
+                    lockSuccess = (distRedisLock.waitTime() == -1L) ? rLock.tryLock()
+                            : rLock.tryLock(distRedisLock.waitTime(), TimeUnit.SECONDS);
                 } else {
                     // 普通加锁方式
                     rLock.lock();

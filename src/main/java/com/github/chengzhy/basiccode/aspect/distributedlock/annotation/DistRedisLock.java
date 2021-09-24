@@ -43,8 +43,7 @@ public @interface DistRedisLock {
      * @date 2021/8/9 9:32
      * @return redisson锁类型，默认为REENTRANT_LOCK
      */
-    DistributedLockAspect.RedissonLock lockType()
-            default DistributedLockAspect.RedissonLock.REENTRANT_LOCK;
+    DistributedLockAspect.RedissonLock lockType() default DistributedLockAspect.RedissonLock.REENTRANT_LOCK;
 
     /**
      * 是否使用尝试加锁方式
