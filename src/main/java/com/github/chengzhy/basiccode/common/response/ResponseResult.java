@@ -181,11 +181,11 @@ public final class ResponseResult<T> extends AbstractResponseResult<T> {
     @Override
     public String toString() {
         return new StringJoiner(", ", ResponseResult.class.getSimpleName() + "[", "]")
-                .add("code=" + getCode())
-                .add("message='" + getMessage() + "'")
-                .add("data=" + getData())
-                .add("success=" + getSuccess())
-                .add("timestamp=" + getTimestamp())
+                .add("code=" + code)
+                .add("message='" + message + "'")
+                .add("data=" + data)
+                .add("success=" + success)
+                .add("timestamp=" + timestamp)
                 .toString();
     }
 

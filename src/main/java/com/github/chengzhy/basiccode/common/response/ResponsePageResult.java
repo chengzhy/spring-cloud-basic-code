@@ -174,12 +174,12 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
     @Override
     public String toString() {
         return new StringJoiner(", ", ResponsePageResult.class.getSimpleName() + "[", "]")
-                .add("code=" + getCode())
-                .add("message='" + getMessage() + "'")
-                .add("data=" + getData())
-                .add("success=" + getSuccess())
-                .add("timestamp=" + getTimestamp())
-                .add("total=" + getTotal())
+                .add("code=" + code)
+                .add("message='" + message + "'")
+                .add("data=" + data)
+                .add("success=" + success)
+                .add("timestamp=" + timestamp)
+                .add("total=" + total)
                 .toString();
     }
 
