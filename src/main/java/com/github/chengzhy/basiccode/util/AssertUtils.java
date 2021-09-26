@@ -23,6 +23,12 @@ public final class AssertUtils extends Assert {
 
     }
 
+    public static void isTrue(boolean expression, HttpStatus httpStatus) {
+        if (!expression) {
+            throw new BusinessException(httpStatus);
+        }
+    }
+
     public static void isTrue(boolean expression, HttpStatus httpStatus, String message) {
         if (!expression) {
             throw new BusinessException(httpStatus, message);
@@ -32,6 +38,12 @@ public final class AssertUtils extends Assert {
     public static void isTrue(boolean expression, HttpStatus httpStatus, Supplier<String> messageSupplier) {
         if (!expression) {
             throw new BusinessException(httpStatus, nullSafeGet(messageSupplier));
+        }
+    }
+
+    public static void isNull(Object object, HttpStatus httpStatus) {
+        if (Objects.nonNull(object)) {
+            throw new BusinessException(httpStatus);
         }
     }
 
@@ -47,6 +59,12 @@ public final class AssertUtils extends Assert {
         }
     }
 
+    public static void notNull(Object object, HttpStatus httpStatus) {
+        if (Objects.isNull(object)) {
+            throw new BusinessException(httpStatus);
+        }
+    }
+
     public static void notNull(Object object, HttpStatus httpStatus, String message) {
         if (Objects.isNull(object)) {
             throw new BusinessException(httpStatus, message);
@@ -56,6 +74,12 @@ public final class AssertUtils extends Assert {
     public static void notNull(Object object, HttpStatus httpStatus, Supplier<String> messageSupplier) {
         if (Objects.isNull(object)) {
             throw new BusinessException(httpStatus, nullSafeGet(messageSupplier));
+        }
+    }
+
+    public static void isEmpty(String text, HttpStatus httpStatus) {
+        if (StringUtils.isNotEmpty(text)) {
+            throw new BusinessException(httpStatus);
         }
     }
 
@@ -71,6 +95,12 @@ public final class AssertUtils extends Assert {
         }
     }
 
+    public static void isNotEmpty(String text, HttpStatus httpStatus) {
+        if (StringUtils.isEmpty(text)) {
+            throw new BusinessException(httpStatus);
+        }
+    }
+
     public static void isNotEmpty(String text, HttpStatus httpStatus, String message) {
         if (StringUtils.isEmpty(text)) {
             throw new BusinessException(httpStatus, message);
@@ -80,6 +110,12 @@ public final class AssertUtils extends Assert {
     public static void isNotEmpty(String text, HttpStatus httpStatus, Supplier<String> messageSupplier) {
         if (StringUtils.isEmpty(text)) {
             throw new BusinessException(httpStatus, nullSafeGet(messageSupplier));
+        }
+    }
+
+    public static void isBlank(String text, HttpStatus httpStatus) {
+        if (StringUtils.isNotBlank(text)) {
+            throw new BusinessException(httpStatus);
         }
     }
 
@@ -95,6 +131,12 @@ public final class AssertUtils extends Assert {
         }
     }
 
+    public static void isNotBlank(String text, HttpStatus httpStatus) {
+        if (StringUtils.isBlank(text)) {
+            throw new BusinessException(httpStatus);
+        }
+    }
+
     public static void isNotBlank(String text, HttpStatus httpStatus, String message) {
         if (StringUtils.isBlank(text)) {
             throw new BusinessException(httpStatus, message);
@@ -104,6 +146,12 @@ public final class AssertUtils extends Assert {
     public static void isNotBlank(String text, HttpStatus httpStatus, Supplier<String> messageSupplier) {
         if (StringUtils.isBlank(text)) {
             throw new BusinessException(httpStatus, nullSafeGet(messageSupplier));
+        }
+    }
+
+    public static void notEmpty(Object[] arrays, HttpStatus httpStatus) {
+        if (ObjectUtils.isEmpty(arrays)) {
+            throw new BusinessException(httpStatus);
         }
     }
 
@@ -119,6 +167,12 @@ public final class AssertUtils extends Assert {
         }
     }
 
+    public static void notEmpty(Collection<?> collection, HttpStatus httpStatus) {
+        if (CollectionUtils.isEmpty(collection)) {
+            throw new BusinessException(httpStatus);
+        }
+    }
+
     public static void notEmpty(Collection<?> collection, HttpStatus httpStatus, String message) {
         if (CollectionUtils.isEmpty(collection)) {
             throw new BusinessException(httpStatus, message);
@@ -128,6 +182,12 @@ public final class AssertUtils extends Assert {
     public static void notEmpty(Collection<?> collection, HttpStatus httpStatus, Supplier<String> messageSupplier) {
         if (CollectionUtils.isEmpty(collection)) {
             throw new BusinessException(httpStatus, nullSafeGet(messageSupplier));
+        }
+    }
+
+    public static void notEmpty(Map<?, ?> map, HttpStatus httpStatus) {
+        if (CollectionUtils.isEmpty(map)) {
+            throw new BusinessException(httpStatus);
         }
     }
 
