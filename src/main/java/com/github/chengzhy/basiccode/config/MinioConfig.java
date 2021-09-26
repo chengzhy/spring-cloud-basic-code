@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * Minio配置
  * @author chengzhy
  * @date 2021/8/6 15:30
- **/
+ */
 @Configuration
 @ConfigurationProperties(prefix = "minio")
 @Getter

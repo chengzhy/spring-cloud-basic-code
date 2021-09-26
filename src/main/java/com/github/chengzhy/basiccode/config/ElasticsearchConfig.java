@@ -13,7 +13,7 @@ import java.util.List;
  * elasticsearch配置
  * @author chengzhy
  * @date 2021/8/6 11:05
- **/
+ */
 @Configuration
 public class ElasticsearchConfig {
 

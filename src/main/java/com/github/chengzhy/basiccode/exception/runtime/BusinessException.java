@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
  * 业务异常
  * @author chengzhy
  * @date 2021/8/6 16:44
- **/
+ */
 public class BusinessException extends RuntimeException {
 
     private static final long serialVersionUID = 1660220342106062823L;

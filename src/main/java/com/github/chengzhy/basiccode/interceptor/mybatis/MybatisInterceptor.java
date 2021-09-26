@@ -27,7 +27,7 @@ import java.util.Properties;
  * args设置拦截方法中的参数
  * @author chengzhy
  * @date 2021/8/16 15:13
- **/
+ */
 @Intercepts({@Signature(type = ParameterHandler.class, method = "setParameters", args = PreparedStatement.class),
         @Signature(type = ResultSetHandler.class, method = "handleResultSets", args = Statement.class)})
 @ConditionalOnProperty(prefix = "mybatis.interceptor", value = "enable", havingValue = "true")

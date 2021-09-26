@@ -16,7 +16,7 @@ import java.util.function.Supplier;
  * 断言工具类
  * @author chengzhy
  * @date 2021/8/11 14:29
- **/
+ */
 public final class AssertUtils extends Assert {
 
     private AssertUtils() {

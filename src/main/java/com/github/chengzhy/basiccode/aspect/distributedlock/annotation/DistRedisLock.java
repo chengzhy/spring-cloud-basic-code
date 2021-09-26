@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * 分布式Redis锁注解(待完善)
  * @author chengzhy
  * @date 2021/8/9 9:32
- **/
+ */
 @Documented
 @Inherited
 @Target({ElementType.METHOD})

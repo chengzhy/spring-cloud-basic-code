@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * 线程池配置
  * @author chengzhy
  * @date 2021/8/4 8:55
- **/
+ */
 @Configuration
 @Slf4j
 public class ExecutorConfig extends AsyncConfigurerSupport {

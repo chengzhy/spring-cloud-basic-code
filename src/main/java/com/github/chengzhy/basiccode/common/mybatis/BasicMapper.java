@@ -9,6 +9,6 @@ import tk.mybatis.mapper.common.MySqlMapper;
  * BasicMapper
  * @author chengzhy
  * @date 2021/8/4 10:51
- **/
+ */
 public interface BasicMapper<T> extends Mapper<T>, MySqlMapper<T>, IdsMapper<T>, ConditionMapper<T> {
 }

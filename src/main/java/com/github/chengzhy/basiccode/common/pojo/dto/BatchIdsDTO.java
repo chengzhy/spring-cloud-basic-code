@@ -6,7 +6,7 @@ import java.util.List;
  * 多主键idDTO
  * @author chengzhy
  * @date 2021/8/9 14:08
- **/
+ */
 public class BatchIdsDTO {
 
     private List<String> ids;

@@ -15,7 +15,7 @@ import java.util.List;
  * 用户信息Service实现
  * @author chengzhy
  * @date 2021/8/24 15:28
- **/
+ */
 @Service
 @CacheConfig(cacheNames = "userInfo")
 public class UserInfoServiceImpl implements UserInfoService {

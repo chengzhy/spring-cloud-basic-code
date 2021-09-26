@@ -10,7 +10,7 @@ import java.io.Serializable;
   * 接口返回响应体
   * @author chengzhy
   * @date 2021/8/4 16:56
-  **/
+  */
 @Getter
 @Setter
 public abstract class AbstractResponseResult<T> implements Serializable {

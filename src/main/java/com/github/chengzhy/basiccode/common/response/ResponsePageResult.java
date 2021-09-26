@@ -11,7 +11,7 @@ import java.util.StringJoiner;
  * 计数返回响应体
  * @author chengzhy
  * @date 2021/8/4 16:56
- **/
+ */
 @Getter
 @Setter
 public final class ResponsePageResult<T> extends AbstractResponseResult<T> {

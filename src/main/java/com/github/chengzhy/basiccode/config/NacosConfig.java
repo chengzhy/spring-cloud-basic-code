@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * Nacos相关配置
  * @author chengzhy
  * @date 2021/8/4 8:53
- **/
+ */
 @Configuration
 public class NacosConfig {
 

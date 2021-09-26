@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
  * RestTemplate配置
  * @author chengzhy
  * @date 2021/8/4 8:49
- **/
+ */
 @Configuration
 public class RestTemplateConfig {
 

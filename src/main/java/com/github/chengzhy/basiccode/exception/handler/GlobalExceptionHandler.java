@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  * 统一异常处理
  * @author chengzhy
  * @date 2021/8/6 15:54
- **/
+ */
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {

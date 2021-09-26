@@ -4,7 +4,7 @@ package com.github.chengzhy.basiccode.common;
  * 常量
  * @author chengzhy
  * @date 2021/8/3 18:29
- **/
+ */
 public final class Constants {
 
     private Constants() {

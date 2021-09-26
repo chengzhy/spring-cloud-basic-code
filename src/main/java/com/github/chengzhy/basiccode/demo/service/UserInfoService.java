@@ -9,7 +9,7 @@ import org.springframework.lang.Nullable;
  * 用户信息Service
  * @author chengzhy
  * @date 2021/8/24 15:27
- **/
+ */
 public interface UserInfoService {
 
     /**
