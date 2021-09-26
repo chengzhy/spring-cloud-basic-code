@@ -204,7 +204,7 @@ public final class AssertUtils extends Assert {
     }
 
     private static String nullSafeGet(Supplier<String> messageSupplier) {
-        return messageSupplier != null ? messageSupplier.get() : null;
+        return Objects.isNull(messageSupplier) ? null : messageSupplier.get();
     }
 
 }
