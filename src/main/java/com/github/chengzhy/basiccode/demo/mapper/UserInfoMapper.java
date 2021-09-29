@@ -2,7 +2,6 @@ package com.github.chengzhy.basiccode.demo.mapper;
 
 import com.github.chengzhy.basiccode.common.mybatis.BasicMapper;
 import com.github.chengzhy.basiccode.demo.entity.UserInfo;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
  * @author chengzhy
  * @date 2021/8/24 15:28
  */
-@Mapper
 public interface UserInfoMapper extends BasicMapper<UserInfo> {
 
     /**
