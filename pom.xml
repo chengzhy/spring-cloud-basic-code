@@ -64,6 +64,13 @@
         </dependency>
         <!-- end -->
 
+        <!-- websocket -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <!-- end -->
+
         <!-- nacos配置中心依赖 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
