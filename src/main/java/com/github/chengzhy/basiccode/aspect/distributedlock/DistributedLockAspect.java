@@ -106,17 +106,6 @@ public class DistributedLockAspect {
          * 可重入锁
          */
         REENTRANT_LOCK {
-            /**
-             * 可重入锁加锁方式
-             *
-             * @author chengzhy
-             * @param joinPoint 程序连接点 {@code ProceedingJoinPoint}
-             * @param redissonClient {@link RedissonClient}
-             * @param lockKey 分布式锁key {@code String}
-             * @date 2021/8/9 9:32
-             * @return {@code Object} ({@code joinPoint.proceed()} 或 {@code null})
-             * @throws Throwable 程序错误
-             */
             @Override
             public Object lock(ProceedingJoinPoint joinPoint, RedissonClient redissonClient,
                                String lockKey) throws Throwable {
@@ -128,17 +117,6 @@ public class DistributedLockAspect {
          * 公平锁
          */
         FAIR_LOCK {
-            /**
-             * 公平锁加锁方式
-             *
-             * @author chengzhy
-             * @param joinPoint 程序连接点 {@code ProceedingJoinPoint}
-             * @param redissonClient {@link RedissonClient}
-             * @param lockKey 分布式锁key {@code String}
-             * @date 2021/8/9 9:32
-             * @return {@code Object} ({@code joinPoint.proceed()} 或 {@code null})
-             * @throws Throwable 程序错误
-             */
             @Override
             public Object lock(ProceedingJoinPoint joinPoint, RedissonClient redissonClient,
                                String lockKey) throws Throwable {
