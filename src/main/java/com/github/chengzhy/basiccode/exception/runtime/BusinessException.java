@@ -16,8 +16,7 @@ public class BusinessException extends RuntimeException {
     private HttpStatus httpStatus;
 
     public BusinessException(HttpStatus httpStatus) {
-        super(String.format(CODE_MESSAGE_FORMAT, httpStatus.value(), httpStatus.getReasonPhrase()));
-        this.httpStatus = httpStatus;
+        this(httpStatus, httpStatus.getReasonPhrase());
     }
 
     public BusinessException(HttpStatus httpStatus, String message) {
@@ -26,8 +25,7 @@ public class BusinessException extends RuntimeException {
     }
 
     public BusinessException(HttpStatus httpStatus, Throwable throwable) {
-        super(String.format(CODE_MESSAGE_FORMAT, httpStatus.value(), httpStatus.getReasonPhrase()), throwable);
-        this.httpStatus = httpStatus;
+        this(httpStatus, httpStatus.getReasonPhrase(), throwable);
     }
 
     public BusinessException(HttpStatus httpStatus, String message, Throwable throwable) {
