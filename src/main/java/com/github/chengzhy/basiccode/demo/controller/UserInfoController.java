@@ -56,7 +56,7 @@ public class UserInfoController {
      */
     @GetMapping("/get")
     public ResponseResult<UserInfo> getUserInfo(@RequestParam("id") String id) {
-        return ResponseResult.success(userInfoService.getUserInfo(id));
+        return ResponseResult.success(userInfoService.getUserInfo(id).orElse(null));
     }
 
 }

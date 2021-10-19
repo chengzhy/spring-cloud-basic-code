@@ -3,7 +3,8 @@ package com.github.chengzhy.basiccode.demo.service;
 import com.github.chengzhy.basiccode.demo.entity.UserInfo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+
+import java.util.Optional;
 
 /**
  * 用户信息Service
@@ -35,7 +36,6 @@ public interface UserInfoService {
      * @date 2021/8/24 15:23
      * @return 用户信息
      */
-    @Nullable
-    UserInfo getUserInfo(@NonNull String id);
+    Optional<UserInfo> getUserInfo(@NonNull String id);
 
 }

@@ -10,6 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 用户信息Service实现
@@ -42,8 +43,8 @@ public class UserInfoServiceImpl implements UserInfoService {
      */
     @Override
     @Cacheable(key = "#id", unless = "#result == null")
-    public UserInfo getUserInfo(String id) {
-        return userInfoMapper.selectByPrimaryKey(id);
+    public Optional<UserInfo> getUserInfo(String id) {
+        return Optional.ofNullable(userInfoMapper.selectByPrimaryKey(id));
     }
 
 }
