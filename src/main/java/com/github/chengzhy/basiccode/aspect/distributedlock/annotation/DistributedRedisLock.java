@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Inherited
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DistRedisLock {
+public @interface DistributedRedisLock {
 
     /**
      * 分布式锁key
@@ -21,7 +21,7 @@ public @interface DistRedisLock {
      *
      * @author chengzhy
      * @date 2021/8/9 9:32
-     * @return 分布式锁key格式为 "DistRedisLock:" + lockKey + @RedisLockKey，默认为""
+     * @return 分布式锁key格式为 "DistributedRedisLock:" + lockKey + @RedisLockKey，默认为""
      */
     String lockKey() default "";
 
@@ -43,7 +43,7 @@ public @interface DistRedisLock {
      * @date 2021/8/9 9:32
      * @return redisson锁类型，默认为REENTRANT_LOCK
      */
-    DistributedLockAspect.RedissonLock lockType() default DistributedLockAspect.RedissonLock.REENTRANT_LOCK;
+    DistributedLockAspect.RedissonLockEnum lockType() default DistributedLockAspect.RedissonLockEnum.REENTRANT_LOCK;
 
     /**
      * 是否使用尝试加锁方式

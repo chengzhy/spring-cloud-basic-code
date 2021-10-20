@@ -3,7 +3,7 @@ package com.github.chengzhy.basiccode.aspect.distributedlock.annotation;
 import java.lang.annotation.*;
 
 /**
- * 分布式Redis锁key注解 (与{@link DistRedisLock @DistRedisLock}注解结合使用)
+ * 分布式Redis锁key注解 (与{@link DistributedRedisLock @DistributedRedisLock}注解结合使用)
  *
  * @author chengzhy
  * @date 2021/8/9 9:32

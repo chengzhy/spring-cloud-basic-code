@@ -1,6 +1,6 @@
 package com.github.chengzhy.basiccode.aspect.distributedlock;
 
-import com.github.chengzhy.basiccode.aspect.distributedlock.annotation.DistRedisLock;
+import com.github.chengzhy.basiccode.aspect.distributedlock.annotation.DistributedRedisLock;
 import com.github.chengzhy.basiccode.aspect.distributedlock.annotation.RedisLockKey;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class DistributedLockAspect {
 
-    private static final String REDIS_LOCK_KEY_PREFIX = "DistRedisLock:";
+    private static final String REDIS_LOCK_KEY_PREFIX = "DistributedRedisLock:";
 
     private final RedissonClient redissonClient;
 
@@ -39,19 +39,19 @@ public class DistributedLockAspect {
 
     /**
      * 通过redisson设置分布式锁
-     * <p>具有{@linkplain DistRedisLock @DistRedisLock}注解的方法设置分布式锁
+     * <p>具有{@linkplain DistributedRedisLock @DistributedRedisLock}注解的方法设置分布式锁
      *
      * @author chengzhy
      * @param joinPoint 程序连接点 {@code ProceedingJoinPoint}
      * @date 2021/8/9 9:32
      * @return {@code Object} ({@code joinPoint.proceed()} 或 {@code null})
      */
-    @Around("@annotation(com.github.chengzhy.basiccode.aspect.distributedlock.annotation.DistRedisLock)")
+    @Around("@annotation(com.github.chengzhy.basiccode.aspect.distributedlock.annotation.DistributedRedisLock)")
     public Object redisLock(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        DistRedisLock distRedisLock = methodSignature.getMethod()
-                .getAnnotation(DistRedisLock.class);
-        return distRedisLock.lockType().lock(joinPoint, redissonClient, getRedisLockKey(joinPoint));
+        DistributedRedisLock distributedRedisLock = methodSignature.getMethod()
+                .getAnnotation(DistributedRedisLock.class);
+        return distributedRedisLock.lockType().lock(joinPoint, redissonClient, getRedisLockKey(joinPoint));
     }
 
     /**
@@ -64,18 +64,18 @@ public class DistributedLockAspect {
      */
     private String getRedisLockKey(@NonNull ProceedingJoinPoint joinPoint) {
         StringBuilder lockKey = new StringBuilder(REDIS_LOCK_KEY_PREFIX);
-        // @DistRedisLock
+        // @DistributedRedisLock
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        DistRedisLock distRedisLock = methodSignature.getMethod()
-                .getAnnotation(DistRedisLock.class);
-        if (StringUtils.isBlank(distRedisLock.lockKey())
-                && distRedisLock.defaultKey()) {
+        DistributedRedisLock distributedRedisLock = methodSignature.getMethod()
+                .getAnnotation(DistributedRedisLock.class);
+        if (StringUtils.isBlank(distributedRedisLock.lockKey())
+                && distributedRedisLock.defaultKey()) {
             // 设置默认key
             lockKey.append(methodSignature.getDeclaringTypeName())
                     .append(".")
                     .append(methodSignature.getName());
         } else {
-            lockKey.append(distRedisLock.lockKey());
+            lockKey.append(distributedRedisLock.lockKey());
         }
         // @RedisLockKey
         Object[] args = joinPoint.getArgs();
@@ -101,7 +101,7 @@ public class DistributedLockAspect {
         return lockKey.toString();
     }
 
-    public enum RedissonLock {
+    public enum RedissonLockEnum {
         /**
          * 可重入锁
          */
@@ -151,20 +151,20 @@ public class DistributedLockAspect {
         protected Object lock(@NonNull ProceedingJoinPoint joinPoint, @NonNull RLock rLock) throws Throwable {
             boolean lockSuccess = false;
             MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-            DistRedisLock distRedisLock = methodSignature.getMethod()
-                    .getAnnotation(DistRedisLock.class);
+            DistributedRedisLock distributedRedisLock = methodSignature.getMethod()
+                    .getAnnotation(DistributedRedisLock.class);
             try {
-                if (distRedisLock.tryLock()) {
+                if (distributedRedisLock.tryLock()) {
                     // tryLock加锁方式
-                    lockSuccess = (distRedisLock.waitTime() == -1L) ? rLock.tryLock()
-                            : (distRedisLock.leaseTime() == -1L) ? rLock.tryLock(distRedisLock.waitTime(), TimeUnit.SECONDS)
-                            : rLock.tryLock(distRedisLock.waitTime(), distRedisLock.leaseTime(), TimeUnit.SECONDS);
+                    lockSuccess = (distributedRedisLock.waitTime() == -1L) ? rLock.tryLock()
+                            : (distributedRedisLock.leaseTime() == -1L) ? rLock.tryLock(distributedRedisLock.waitTime(), TimeUnit.SECONDS)
+                            : rLock.tryLock(distributedRedisLock.waitTime(), distributedRedisLock.leaseTime(), TimeUnit.SECONDS);
                 } else {
                     // 普通加锁方式
-                    if (distRedisLock.leaseTime() == -1L) {
+                    if (distributedRedisLock.leaseTime() == -1L) {
                         rLock.lock();
                     } else {
-                        rLock.lock(distRedisLock.leaseTime(), TimeUnit.SECONDS);
+                        rLock.lock(distributedRedisLock.leaseTime(), TimeUnit.SECONDS);
                     }
                     lockSuccess = true;
                 }
