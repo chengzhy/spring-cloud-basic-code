@@ -107,10 +107,10 @@ public class RedisConfig extends CachingConfigurerSupport {
     public CacheManager cacheManager(RedisTemplate<String, Object> redisTemplate) {
         return RedisCacheManager
                 .builder(RedisCacheWriter.nonLockingRedisCacheWriter(redisTemplate.getConnectionFactory()))
-                .cacheDefaults(getRedisCacheConfigurationWithTtl(redisTemplate, 3600))
+                .cacheDefaults(getRedisCacheConfigurationWithTtl(redisTemplate, 3600L))
                 /**
                  * 自定义缓存配置
-                 * .withCacheConfiguration("userInfo", getRedisCacheConfigurationWithTtl(redisTemplate, 60))
+                 * .withCacheConfiguration("userInfo", getRedisCacheConfigurationWithTtl(redisTemplate, 60L))
                  * or
                  * .withInitialCacheConfigurations()
                  */
