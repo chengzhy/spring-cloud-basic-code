@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintDeclarationException;
+import javax.validation.ConstraintViolationException;
 
 /**
  * 统一异常处理
@@ -42,7 +44,7 @@ public class GlobalExceptionHandler {
                 .append("错误, 请改为")
                 .append(String.join("、", e.getSupportedMethods()));
         log.error("请求[{}]请求方式错误！", request.getRequestURL());
-        log.error("错误信息: {}", e.getMessage(), e);
+        log.error("错误信息: {}", e.getMessage());
         return ResponseResult.fail(HttpStatus.BAD_REQUEST.value(), errorMessage.toString());
     }
 
@@ -65,12 +67,12 @@ public class GlobalExceptionHandler {
                 .append(e.getValue())
                 .append("]类型错误！");
         log.error("请求[{}]参数类型错误！", request.getRequestURL());
-        log.error("错误信息: {}", errorMessage.toString(), e);
+        log.error("错误信息: {}", errorMessage.toString());
         return ResponseResult.fail(HttpStatus.BAD_REQUEST.value(), errorMessage.toString());
     }
 
     /**
-     * 参数校验失败MethodArgumentNotValidException异常处理
+     * 请求体参数校验失败MethodArgumentNotValidException异常处理
      *
      * @author chengzhy
      * @param request 请求
@@ -87,9 +89,43 @@ public class GlobalExceptionHandler {
                     .append(":")
                     .append(fieldError.getDefaultMessage());
         }
-        log.error("请求[{}]参数校验失败！", request.getRequestURL());
+        log.error("请求[{}]请求体参数校验失败！", request.getRequestURL());
         log.error("错误信息: {}", errorMessage.toString());
         return ResponseResult.fail(HttpStatus.BAD_REQUEST.value(), errorMessage.toString());
+    }
+
+    /**
+     * 请求参数校验失败ConstraintViolationException异常处理
+     *
+     * @author chengzhy
+     * @param request 请求
+     * @param e 异常
+     * @date 2021/10/26 8:54
+     * @return 错误返回响应体
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseResult<?> constraintViolationExceptionHandler(HttpServletRequest request,
+                                                                 ConstraintViolationException e) {
+        log.error("请求[{}]请求参数校验失败！", request.getRequestURL());
+        log.error("错误信息: {}", e.getMessage());
+        return ResponseResult.fail(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+    }
+
+    /**
+     * 调用方法时传参校验失败ConstraintDeclarationException异常处理
+     *
+     * @author chengzhy
+     * @param request 请求
+     * @param e 异常
+     * @date 2021/10/26 10:15
+     * @return 错误返回响应体
+     */
+    @ExceptionHandler(ConstraintDeclarationException.class)
+    public ResponseResult<?> constraintDeclarationExceptionHandler(HttpServletRequest request,
+                                                                   ConstraintDeclarationException e) {
+        log.error("请求[{}]调用方法时传参校验失败！", request.getRequestURL());
+        log.error("错误信息: {}", e.getMessage(), e);
+        return ResponseResult.fail("后台调用方法时传参校验失败，请查看后台服务日志！");
     }
 
     /**
