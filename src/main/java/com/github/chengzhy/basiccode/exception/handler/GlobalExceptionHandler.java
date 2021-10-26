@@ -8,12 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintDeclarationException;
 import javax.validation.ConstraintViolationException;
 
 /**
@@ -72,6 +72,24 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 请求参数缺失MissingServletRequestParameterException异常处理
+     *
+     * @author chengzhy
+     * @param request 请求
+     * @param e 异常
+     * @date 2021/10/26 14:32
+     * @return 错误返回响应体
+     */
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseResult<?> missingServletRequestParameterExceptionHandler(HttpServletRequest request,
+                                                                            MissingServletRequestParameterException e) {
+        log.error("请求[{}]请求参数缺失！", request.getRequestURL());
+        log.error("错误信息: 缺失参数[{}, 类型:{}]", e.getParameterName(), e.getParameterType());
+        return ResponseResult.fail(HttpStatus.BAD_REQUEST.value(),
+                String.format("缺失参数[%s, 类型:%s]", e.getParameterName(), e.getParameterType()));
+    }
+
+    /**
      * 请求体参数校验失败MethodArgumentNotValidException异常处理
      *
      * @author chengzhy
@@ -95,7 +113,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 请求参数校验失败ConstraintViolationException异常处理
+     * 调用方法传参校验失败ConstraintViolationException异常处理
      *
      * @author chengzhy
      * @param request 请求
@@ -106,26 +124,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseResult<?> constraintViolationExceptionHandler(HttpServletRequest request,
                                                                  ConstraintViolationException e) {
-        log.error("请求[{}]请求参数校验失败！", request.getRequestURL());
-        log.error("错误信息: {}", e.getMessage());
-        return ResponseResult.fail(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-    }
-
-    /**
-     * 调用方法时传参校验失败ConstraintDeclarationException异常处理
-     *
-     * @author chengzhy
-     * @param request 请求
-     * @param e 异常
-     * @date 2021/10/26 10:15
-     * @return 错误返回响应体
-     */
-    @ExceptionHandler(ConstraintDeclarationException.class)
-    public ResponseResult<?> constraintDeclarationExceptionHandler(HttpServletRequest request,
-                                                                   ConstraintDeclarationException e) {
-        log.error("请求[{}]调用方法时传参校验失败！", request.getRequestURL());
+        log.error("请求[{}]调用方法传参校验失败！", request.getRequestURL());
         log.error("错误信息: {}", e.getMessage(), e);
-        return ResponseResult.fail("后台调用方法时传参校验失败，请查看后台服务日志！");
+        return ResponseResult.fail(e.getMessage());
     }
 
     /**

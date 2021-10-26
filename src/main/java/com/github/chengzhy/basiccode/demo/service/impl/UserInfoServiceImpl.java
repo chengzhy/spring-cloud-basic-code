@@ -5,8 +5,6 @@ import com.github.chengzhy.basiccode.demo.mapper.UserInfoMapper;
 import com.github.chengzhy.basiccode.demo.service.UserInfoService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +16,6 @@ import java.util.Optional;
  * @date 2021/8/24 15:28
  */
 @Service
-@CacheConfig(cacheNames = "userInfo")
 public class UserInfoServiceImpl implements UserInfoService {
 
     private final UserInfoMapper userInfoMapper;
@@ -42,7 +39,6 @@ public class UserInfoServiceImpl implements UserInfoService {
      * {@inheritDoc}
      */
     @Override
-    @Cacheable(key = "#id", unless = "#result == null")
     public Optional<UserInfo> getUserInfo(String id) {
         return Optional.ofNullable(userInfoMapper.selectByPrimaryKey(id));
     }

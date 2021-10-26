@@ -2,6 +2,8 @@ package com.github.chengzhy.basiccode.demo.service;
 
 import com.github.chengzhy.basiccode.demo.entity.UserInfo;
 import com.github.pagehelper.PageInfo;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.NonNull;
 
 import java.util.Optional;
@@ -11,6 +13,7 @@ import java.util.Optional;
  * @author chengzhy
  * @date 2021/8/24 15:27
  */
+@CacheConfig(cacheNames = "userInfo")
 public interface UserInfoService {
 
     /**
@@ -36,6 +39,7 @@ public interface UserInfoService {
      * @date 2021/8/24 15:23
      * @return 用户信息
      */
+    @Cacheable(key = "#id", unless = "#result == null")
     Optional<UserInfo> getUserInfo(@NonNull String id);
 
 }
