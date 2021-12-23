@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -48,6 +49,21 @@ public class ExecutorConfig extends AsyncConfigurerSupport {
         // 缓冲队列满了之后的拒绝策略：由调用线程处理（一般是主线程）
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.initialize();
+        return executor;
+    }
+
+    /**
+     * 定时任务线程池
+     *
+     * @author chengzhy
+     * @date 2021/12/23 11:22
+     * @return Executor
+     */
+    @Bean
+    public Executor scheduledExecutor() {
+        ThreadPoolTaskScheduler executor = new ThreadPoolTaskScheduler();
+        executor.setPoolSize(CPU_NUM + 1);
+        executor.setThreadNamePrefix("scheduledExecutor-");
         return executor;
     }
 
