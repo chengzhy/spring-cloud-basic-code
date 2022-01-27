@@ -20,6 +20,7 @@
         <!--<spring-cloud.version>Hoxton.SR9</spring-cloud.version>-->
         <!-- 对应elasticsearch服务端版本 -->
         <elasticsearch.version>7.16.3</elasticsearch.version>
+        <log4j2.version>2.17.1</log4j2.version>
     </properties>
 
     <dependencies>
