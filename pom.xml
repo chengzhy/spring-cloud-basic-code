@@ -19,7 +19,7 @@
         <java.version>1.8</java.version>
         <!--<spring-cloud.version>Hoxton.SR9</spring-cloud.version>-->
         <!-- 对应elasticsearch服务端版本 -->
-        <elasticsearch.version>7.12.1</elasticsearch.version>
+        <elasticsearch.version>7.16.3</elasticsearch.version>
     </properties>
 
     <dependencies>
@@ -104,7 +104,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.26</version>
+            <version>8.0.28</version>
         </dependency>
         <!-- end -->
 
