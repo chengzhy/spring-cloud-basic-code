@@ -38,11 +38,11 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
      * @author chengzhy
      * @param data 响应结果
      * @param total 响应结果总数
-     * @param <T> 响应结果类型
+     * @param <E> 响应结果类型
      * @date 2021/8/4 16:56
      * @return 请求成功返回响应体
      */
-    public static <T> ResponsePageResult<T> success(T data, long total) {
+    public static <E> ResponsePageResult<E> success(E data, long total) {
         return success(data, total, Constants.SUCCESS_MESSAGE);
     }
 
@@ -53,12 +53,12 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
      * @param data 响应结果
      * @param total 响应结果总数
      * @param message 响应信息
-     * @param <T> 响应结果类型
+     * @param <E> 响应结果类型
      * @date 2021/8/4 16:56
      * @return 请求成功返回响应体
      */
-    public static <T> ResponsePageResult<T> success(T data, long total, String message) {
-        return ResponsePageResult.<T>builder()
+    public static <E> ResponsePageResult<E> success(E data, long total, String message) {
+        return ResponsePageResult.<E>builder()
                 .code(HttpStatus.OK.value())
                 .message(message)
                 .data(data)
@@ -141,11 +141,11 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
      * @param code 响应编码
      * @param data 响应结果
      * @param total 响应结果总数
-     * @param <T> 响应结果类型
+     * @param <E> 响应结果类型
      * @date 2021/8/27 10:20
      * @return 请求响应返回体
      */
-    public static <T> ResponsePageResult<T> response(int code, T data, long total) {
+    public static <E> ResponsePageResult<E> response(int code, E data, long total) {
         return ResponsePageResult.response(code, data, total, Constants.RESPONSE_MESSAGE);
     }
 
@@ -157,12 +157,12 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
      * @param data 响应结果
      * @param total 响应结果总数
      * @param message 响应信息
-     * @param <T> 响应结果类型
+     * @param <E> 响应结果类型
      * @date 2021/8/27 10:20
      * @return 请求响应返回体
      */
-    public static <T> ResponsePageResult<T> response(int code, T data, long total, String message) {
-        return ResponsePageResult.<T>builder()
+    public static <E> ResponsePageResult<E> response(int code, E data, long total, String message) {
+        return ResponsePageResult.<E>builder()
                 .code(code)
                 .message(message)
                 .data(data)
@@ -183,7 +183,7 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
                 .toString();
     }
 
-    public static <T> Builder<T> builder() {
+    public static <E> Builder<E> builder() {
         return new Builder<>();
     }
 
@@ -198,37 +198,37 @@ public final class ResponsePageResult<T> extends AbstractResponseResult<T> {
         public Builder() {
         }
 
-        public Builder<T> code(int code) {
+        public Builder code(int code) {
             this.code = code;
             return this;
         }
 
-        public Builder<T> message(String message) {
+        public Builder message(String message) {
             this.message = message;
             return this;
         }
 
-        public Builder<T> data(T data) {
+        public Builder data(T data) {
             this.data = data;
             return this;
         }
 
-        public Builder<T> success(Boolean success) {
+        public Builder success(Boolean success) {
             this.success = success;
             return this;
         }
 
-        public Builder<T> timestamp(long timestamp) {
+        public Builder timestamp(long timestamp) {
             this.timestamp = timestamp;
             return this;
         }
 
-        public Builder<T> total(long total) {
+        public Builder total(long total) {
             this.total = total;
             return this;
         }
 
-        public ResponsePageResult<T> build() {
+        public ResponsePageResult build() {
             return new ResponsePageResult<>(this.code, this.message, this.data, this.success, this.timestamp, this.total);
         }
 

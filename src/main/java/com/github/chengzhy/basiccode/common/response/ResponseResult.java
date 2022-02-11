@@ -38,11 +38,11 @@ public final class ResponseResult<T> extends AbstractResponseResult<T> {
      *
      * @author chengzhy
      * @param data 响应结果
-     * @param <T> 响应结果类型
+     * @param <E> 响应结果类型
      * @date 2021/8/4 16:56
      * @return 请求成功返回响应体
      */
-    public static <T> ResponseResult<T> success(T data) {
+    public static <E> ResponseResult<E> success(E data) {
         return success(data, Constants.SUCCESS_MESSAGE);
     }
 
@@ -64,12 +64,12 @@ public final class ResponseResult<T> extends AbstractResponseResult<T> {
      * @author chengzhy
      * @param data 响应结果
      * @param message 响应信息
-     * @param <T> 响应结果类型
+     * @param <E> 响应结果类型
      * @date 2021/8/4 16:56
      * @return 请求成功返回响应体
      */
-    public static <T> ResponseResult<T> success(T data, String message) {
-        return ResponseResult.<T>builder()
+    public static <E> ResponseResult<E> success(E data, String message) {
+        return ResponseResult.<E>builder()
                 .code(HttpStatus.OK.value())
                 .message(message)
                 .data(data)
@@ -150,11 +150,11 @@ public final class ResponseResult<T> extends AbstractResponseResult<T> {
      * @author chengzhy
      * @param code 响应编码
      * @param data 响应结果
-     * @param <T> 响应结果类型
+     * @param <E> 响应结果类型
      * @date 2021/8/27 9:43
      * @return 请求响应返回体
      */
-    public static <T> ResponseResult<T> response(int code, T data) {
+    public static <E> ResponseResult<E> response(int code, E data) {
         return response(code, data, Constants.RESPONSE_MESSAGE);
     }
 
@@ -165,12 +165,12 @@ public final class ResponseResult<T> extends AbstractResponseResult<T> {
      * @param code 响应编码
      * @param data 响应结果
      * @param message 响应信息
-     * @param <T> 响应结果类型
+     * @param <E> 响应结果类型
      * @date 2021/8/27 9:43
      * @return 请求响应返回体
      */
-    public static <T> ResponseResult<T> response(int code, T data, String message) {
-        return ResponseResult.<T>builder()
+    public static <E> ResponseResult<E> response(int code, E data, String message) {
+        return ResponseResult.<E>builder()
                 .code(code)
                 .message(message)
                 .data(data)
@@ -189,7 +189,7 @@ public final class ResponseResult<T> extends AbstractResponseResult<T> {
                 .toString();
     }
 
-    public static <T> Builder<T> builder() {
+    public static <E> Builder<E> builder() {
         return new Builder<>();
     }
 
@@ -203,32 +203,32 @@ public final class ResponseResult<T> extends AbstractResponseResult<T> {
         public Builder() {
         }
 
-        public Builder<T> code(int code) {
+        public Builder code(int code) {
             this.code = code;
             return this;
         }
 
-        public Builder<T> message(String message) {
+        public Builder message(String message) {
             this.message = message;
             return this;
         }
 
-        public Builder<T> data(T data) {
+        public Builder data(T data) {
             this.data = data;
             return this;
         }
 
-        public Builder<T> success(Boolean success) {
+        public Builder success(Boolean success) {
             this.success = success;
             return this;
         }
 
-        public Builder<T> timestamp(long timestamp) {
+        public Builder timestamp(long timestamp) {
             this.timestamp = timestamp;
             return this;
         }
 
-        public ResponseResult<T> build() {
+        public ResponseResult build() {
             return new ResponseResult(this.code, this.message, this.data, this.success, this.timestamp);
         }
 
