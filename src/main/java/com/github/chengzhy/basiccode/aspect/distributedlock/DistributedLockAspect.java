@@ -101,27 +101,27 @@ public class DistributedLockAspect {
         return lockKey.toString();
     }
 
-    public enum RedissonLockEnum {
+    public enum RedissonLockTypeEnum {
         /**
-         * 可重入锁
+         * 可重入非公平锁
+         * @see org.redisson.RedissonLock
          */
-        REENTRANT_LOCK {
+        REDISSON_LOCK {
             @Override
             public Object lock(ProceedingJoinPoint joinPoint, RedissonClient redissonClient,
                                String lockKey) throws Throwable {
-                RLock rLock = redissonClient.getLock(lockKey);
-                return lock(joinPoint, rLock);
+                return lock(joinPoint, redissonClient.getLock(lockKey));
             }
         },
         /**
-         * 公平锁
+         * 可重入公平锁
+         * @see org.redisson.RedissonFairLock
          */
-        FAIR_LOCK {
+        REDISSON_FAIR_LOCK {
             @Override
             public Object lock(ProceedingJoinPoint joinPoint, RedissonClient redissonClient,
                                String lockKey) throws Throwable {
-                RLock rLock = redissonClient.getFairLock(lockKey);
-                return lock(joinPoint, rLock);
+                return lock(joinPoint, redissonClient.getFairLock(lockKey));
             }
         };
 
@@ -148,7 +148,7 @@ public class DistributedLockAspect {
          * @date 2021/8/9 9:32
          * @return {@code Object} ({@code joinPoint.proceed()} 或 {@code null})
          */
-        protected Object lock(@NonNull ProceedingJoinPoint joinPoint, @NonNull RLock rLock) throws Throwable {
+        Object lock(@NonNull ProceedingJoinPoint joinPoint, @NonNull RLock rLock) throws Throwable {
             boolean lockSuccess = false;
             MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
             DistributedRedisLock distributedRedisLock = methodSignature.getMethod()
